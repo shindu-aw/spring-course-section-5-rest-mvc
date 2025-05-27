@@ -4,6 +4,7 @@ import guru.springframework.spring6restmvc.model.Beer;
 import guru.springframework.spring6restmvc.model.BeerStyle;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -111,5 +112,32 @@ public class BeerServiceImpl implements BeerService {
     @Override
     public void deleteById(UUID beerId) {
         beerMap.remove(beerId);
+    }
+
+    @Override
+    public void patchBeerById(UUID beerId, Beer beer) {
+
+        /*
+        * In patch, the rule of thumb is that:
+        * - if the property is null, you don't do the update
+        * - if the property does have a value, update it
+         */
+
+        Beer existing = beerMap.get(beerId);
+
+        if (StringUtils.hasText(beer.getBeerName()))
+            existing.setBeerName(beer.getBeerName());
+
+        if (beer.getBeerStyle() != null)
+            existing.setBeerStyle(beer.getBeerStyle());
+
+        if (beer.getPrice() != null)
+            existing.setPrice(beer.getPrice());
+
+        if (beer.getQuantityOnHand() != null)
+            existing.setQuantityOnHand(beer.getQuantityOnHand());
+
+        if (StringUtils.hasText(beer.getUpc()))
+            existing.setUpc(beer.getUpc());
     }
 }
