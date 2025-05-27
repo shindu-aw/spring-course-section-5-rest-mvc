@@ -107,4 +107,9 @@ public class BeerServiceImpl implements BeerService {
         // ! the line below is unnecessary, the reference is passed correctly without it
         // ! beerMap.put(beerId, existing);
     }
+
+    @Override
+    public void deleteById(UUID beerId) {
+        beerMap.remove(beerId);
+    }
 }
