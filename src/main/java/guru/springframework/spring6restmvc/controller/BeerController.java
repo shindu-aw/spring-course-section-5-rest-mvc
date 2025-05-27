@@ -43,8 +43,6 @@ public class BeerController {
 
         log.debug("Get Beer by Id - in controller. Id: " + beerId.toString());
 
-        System.out.println();
-
         return beerService.getBeerById(beerId);
     }
 
