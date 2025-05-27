@@ -80,4 +80,9 @@ public class CustomerServiceImpl implements CustomerService {
         // ! the line below is unnecessary, the reference is passed correctly without it
         // ! customerMap.put(customerId, existing);
     }
+
+    @Override
+    public void deleteCustomerById(UUID customerId) {
+        customerMap.remove(customerId);
+    }
 }
