@@ -118,7 +118,7 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public void patchBeerById(UUID beerId, BeerDTO beer) {
+    public Optional<BeerDTO> patchBeerById(UUID beerId, BeerDTO beer) {
 
         /*
         * In patch, the rule of thumb is that:
@@ -142,5 +142,7 @@ public class BeerServiceImpl implements BeerService {
 
         if (StringUtils.hasText(beer.getUpc()))
             existing.setUpc(beer.getUpc());
+
+        return Optional.of(existing);
     }
 }

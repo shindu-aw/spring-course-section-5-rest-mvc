@@ -73,26 +73,26 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void updateCustomerById(UUID customerId, CustomerDTO customer) {
+    public Optional<CustomerDTO> updateCustomerById(UUID customerId, CustomerDTO customer) {
         CustomerDTO existing = customerMap.get(customerId);
-
         existing.setName(customer.getName());
-
-        // ! the line below is unnecessary, the reference is passed correctly without it
-        // ! customerMap.put(customerId, existing);
+        return Optional.of(existing);
     }
 
     @Override
-    public void deleteCustomerById(UUID customerId) {
+    public boolean deleteCustomerById(UUID customerId) {
         customerMap.remove(customerId);
+        return true; // shitty implementation because this class is deprecated anyway
     }
 
     @Override
-    public void patchCustomerById(UUID customerId, CustomerDTO customer) {
+    public Optional<CustomerDTO> patchCustomerById(UUID customerId, CustomerDTO customer) {
 
         CustomerDTO existing = customerMap.get(customerId);
 
         if (StringUtils.hasText(customer.getName()))
             existing.setName(customer.getName());
+
+        return Optional.of(existing);
     }
 }
