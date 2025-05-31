@@ -96,7 +96,7 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public void updateBeerById(UUID beerId, BeerDTO beer) {
+    public Optional<BeerDTO> updateBeerById(UUID beerId, BeerDTO beer) {
         BeerDTO existing = beerMap.get(beerId);
 
         existing.setBeerName(beer.getBeerName());
@@ -107,6 +107,7 @@ public class BeerServiceImpl implements BeerService {
 
         // ! the line below is unnecessary, the reference is passed correctly without it
         // ! beerMap.put(beerId, existing);
+        return Optional.of(existing);
     }
 
     @Override
