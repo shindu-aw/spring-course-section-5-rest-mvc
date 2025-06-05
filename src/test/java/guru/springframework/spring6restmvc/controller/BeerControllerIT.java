@@ -28,6 +28,7 @@ import static org.hamcrest.core.Is.is;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -57,6 +58,14 @@ class BeerControllerIT {
         // sets up the Mock MVC environment with the Spring Data repositories injected
         // basically a full Spring Boot test
         mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+    }
+
+    @Test
+    void testListBeersByName() throws Exception {
+        mockMvc.perform(get(BeerController.BEER_PATH)
+                .queryParam("beerName", "IPA"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()", is(100))); // TODO change size to fit the data
     }
 
     @Test
