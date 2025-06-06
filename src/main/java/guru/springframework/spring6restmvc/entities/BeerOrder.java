@@ -28,7 +28,7 @@ public class BeerOrder {
         this.customerRef = customerRef;
         this.setCustomer(customer); // this setter helps maintain both sides of the relationship without flushing
         this.beerOrderLines = beerOrderLines;
-        this.beerOrderShipment = beerOrderShipment;
+        this.setBeerOrderShipment(beerOrderShipment); // this setter helps maintain both sides of the relationship without flushing
     }
 
     @Id
@@ -67,7 +67,18 @@ public class BeerOrder {
     @OneToMany(mappedBy = "beerOrder")
     private Set<BeerOrderLine> beerOrderLines;
 
-    @OneToOne
+    /**
+     * <a href="https://www.baeldung.com/jpa-cascade-types#2-cascadetypepersist">Baeldung - Overview of JPA/Hibernate Cascade Types - 3.2. CascadeType.PERSIST</a>
+     * <p>
+     * The persist operation makes a transient instance persistent.
+     * Cascade Type PERSIST propagates the persist operation from a parent to a child entity.
+     * When we save the BeerOrder entity, the BeerOrderShipment entity will also get saved.
+     */
+    @OneToOne(cascade = CascadeType.PERSIST)
     private BeerOrderShipment beerOrderShipment;
 
+    public void setBeerOrderShipment(BeerOrderShipment beerOrderShipment) {
+        this.beerOrderShipment = beerOrderShipment;
+        beerOrderShipment.setBeerOrder(this);
+    }
 }
