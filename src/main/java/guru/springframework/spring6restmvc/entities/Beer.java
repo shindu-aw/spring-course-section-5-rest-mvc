@@ -14,6 +14,7 @@ import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -57,13 +58,27 @@ public class Beer {
     @OneToMany(mappedBy = "beer")
     private Set<BeerOrderLine> beerOrderLines;
 
+    // when Project Lombok generates code, it will go ahead and initialize that to the default of 'new HashSet<>()'
+    @Builder.Default
     @ManyToMany
     @JoinTable(
             name = "beer_category",
             joinColumns = @JoinColumn(name = "beer_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
-    private Set<Category> categories;
+    private Set<Category> categories = new HashSet<>();
+
+    // helper method that helps maintain the bidirectional relationship
+    public void addCategory(Category category) {
+        this.categories.add(category);
+        category.getBeers().add(this);
+    }
+
+    // helper method that helps maintain the bidirectional relationship
+    public void removeCategory(Category category) {
+        this.categories.remove(category);
+        category.getBeers().remove(this);
+    }
 
     @CreationTimestamp
     private LocalDateTime createdDate;
